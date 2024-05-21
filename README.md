@@ -18,9 +18,9 @@
       base: "/[GitHub-Repo-Name]/"
     ```
 
-  - iv). Create folder (github/workflows/deploy.yml)
+  - iv). Create folder (../.github/workflows/deploy.yml)
     ```bash
-      root-dir/github/workflows/deploy.yml 
+      root-dir/.github/workflows/deploy.yml 
     ```
   - v). Add the bellow code in *deploy.yml* file
     ```bash
@@ -77,7 +77,7 @@
                 publish_dir: ./dist
     ```
 
-  - vi). init, Add, Commit and Push to GitHub
+  - vi). Add, Commit and Push to GitHub
   - vii). Active workflow (GitHub on webpage)
 
     ```bash
