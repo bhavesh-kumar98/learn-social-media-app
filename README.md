@@ -91,7 +91,7 @@
 
       ```
 
-  **2. I learned.**
+**2. I learned.**
 
 - create react app using vite
 - project file **structure**
@@ -372,8 +372,6 @@
     );
   }
   ```
-
-````
 
 **6. Use ref**
 
@@ -852,11 +850,12 @@
       ```
 
 <hr>
+<hr>
 
 **10. Social Media App:**
   - **1. use State**
       <br>
-      Used **useState** to toggle sidebar menu.
+    - Used **useState** to toggle sidebar menu.
 
       ```base
       1). const [selectedTab, setSelectedTab] = useState("Home");
@@ -873,4 +872,103 @@
 
       7). {selectedTab === "Home" ? (<CreatePost></CreatePost>) : (<PostList></PostList>)}
 
+      ```
+    <hr>
+
+  - **2. Create store and createContext**
+      <br>
+    - Create a **store** and **createContext** to pass the values (values, fnts and methods) to all components    (children).
+      <br>
+    - Create Component **PostListProvider** to access the children for **Clean UI** of *App.jsx*.
+
+      ```base
+      0). src\store\post-list-store.jsx
+      
+      1). import { createContext } from "react";
+
+      2). export const PostListContext = createContext({postList: [], addPost: () => {}, deletePost: () => {},});
+
+      3). const PostListProvider = ({ children }) => {
+            const addPost = () => {};
+            const deletePost = () => {};
+
+            return (
+              <PostListContext.Provider value={{postList, addPost, deletePost}}>
+                {children}
+              </PostListContext.Provider>
+            );};
+          export default PostListProvider;
+      ```
+    <hr>
+
+  - **3. Create State using useReducer**
+      <br>
+    - Create a **State** using **useReducer**, current value (postList) and *import* by **useContext**  into all components (children).
+      <br>
+    - **DispatchPostList** is used to pass action object (type, payload) to **Reducer** fnt (PostListReducer).
+      <br>
+    - **Reducer** fnt (PostListReducer) takes (currPostList, action) from **DispatchPostList** and **Return** **new state**.
+
+      ```base
+        
+      1). import { useReducer } from "react";
+
+      2). const postListReducer = (currPostList, action) => {
+              if(action.type === "ADD_POST") { // logic with payload and currPostList}
+              return currPostList;
+              };
+
+      3). const PostListProvider = ({ children }) => {
+
+            const [postList, dispatchPostList] = useReducer(postListReducer, STATIC_POST_DATA);
+
+              const addPost = () => { 
+                const addPostActionObj = {
+                  type: "ADD_POST",
+                  payload: {
+                    value1,
+                    value2,
+                  }
+                };
+                dispatchPostList(addPostActionObj);
+              };
+
+            return (
+              <PostListContext.Provider value={{ postList, addPost, deletePost }}>
+                {children}
+              </PostListContext.Provider>
+            );};
+      ```
+    <hr>
+
+  - **4. Pass OR import CurrState (postList) using useContext**
+      <br>
+    - **import** currState (**postList**) from **PostListContext** use by **useContext**
+      <br>
+    - **DispatchPostList** is used to pass action object (type, payload) to **Reducer** fnt (PostListReducer).
+      <br>
+    - **Reducer** fnt (PostListReducer) takes (currPostList, action) from **DispatchPostList** and **Return** **new state**.
+
+      ```base
+      
+      0). <!-- PostList.jsx -->
+
+      1). import { useContext } from "react";
+          import { PostListContext } from "../store/post-list-store";
+
+          const PostList = () => {
+
+            <!-- Access currState "postList" -->
+
+            const { postList } = useContext(PostListContext);
+
+            return (<>
+
+              <!-- use postList -->
+
+                {postList.map((post) => (
+                  <Post key={post.id} post={post}></Post>
+                ))}
+              </>);};
+          export default PostList;
       ```
