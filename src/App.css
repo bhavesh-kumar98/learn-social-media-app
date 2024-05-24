@@ -21,3 +21,8 @@
 .reactions {
   margin: 15px 0 0 0;
 }
+
+.create-post {
+  width: 50%;
+  margin: 50px auto;
+}

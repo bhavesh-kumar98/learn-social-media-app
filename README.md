@@ -238,7 +238,6 @@
 
       const onBtnClick = (event) => {
         let targetVal = event.target.childNodes[0].data;
-        console.log(targetVal);
       };
 
       return (
@@ -433,7 +432,7 @@
       </div>
     );
   }
-````
+```
 
 **7. Update state from Previous Sate:**
 
@@ -853,122 +852,246 @@
 <hr>
 
 **10. Social Media App:**
-  - **1. use State**
-      <br>
-    - Used **useState** to toggle sidebar menu.
 
-      ```base
-      1). const [selectedTab, setSelectedTab] = useState("Home");
+- **1. use State**
+  <br>
 
-      2). <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
+  - Used **useState** to toggle sidebar menu.
 
-      3). onClick={() => { setSelectedTab("Home"); }}
+    ```base
+    1). const [selectedTab, setSelectedTab] = useState("Home");
 
-      4). onClick={() => { setSelectedTab("CreatePost"); }}
+    2). <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
 
-      5). className={`nav-link text-white ${selectedTab === "CreatePost" && "active"}`}
+    3). onClick={() => { setSelectedTab("Home"); }}
 
-      6). className={`nav-link text-white ${selectedTab === "Home" && "active"}`}
+    4). onClick={() => { setSelectedTab("CreatePost"); }}
 
-      7). {selectedTab === "Home" ? (<CreatePost></CreatePost>) : (<PostList></PostList>)}
+    5). className={`nav-link text-white ${selectedTab === "CreatePost" && "active"}`}
 
-      ```
+    6). className={`nav-link text-white ${selectedTab === "Home" && "active"}`}
+
+    7). {selectedTab === "Home" ? (<CreatePost></CreatePost>) : (<PostList></PostList>)}
+
+    ```
+
     <hr>
 
-  - **2. Create store and createContext**
-      <br>
-    - Create a **store** and **createContext** to pass the values (values, fnts and methods) to all components    (children).
-      <br>
-    - Create Component **PostListProvider** to access the children for **Clean UI** of *App.jsx*.
+- **2. Create store and createContext**
+  <br>
 
-      ```base
-      0). src\store\post-list-store.jsx
-      
-      1). import { createContext } from "react";
+  - Create a **store** and **createContext** to pass the values (values, fnts and methods) to all components (children).
+    <br>
+  - Create Component **PostListProvider** to access the children for **Clean UI** of _App.jsx_.
 
-      2). export const PostListContext = createContext({postList: [], addPost: () => {}, deletePost: () => {},});
+    ```base
+    0). src\store\post-list-store.jsx
 
-      3). const PostListProvider = ({ children }) => {
-            const addPost = () => {};
-            const deletePost = () => {};
+    1). import { createContext } from "react";
 
-            return (
-              <PostListContext.Provider value={{postList, addPost, deletePost}}>
-                {children}
-              </PostListContext.Provider>
-            );};
-          export default PostListProvider;
-      ```
+    2). export const PostListContext = createContext({postList: [], addPost: () => {}, deletePost: () => {},});
+
+    3). const PostListProvider = ({ children }) => {
+          const addPost = () => {};
+          const deletePost = () => {};
+
+          return (
+            <PostListContext.Provider value={{postList, addPost, deletePost}}>
+              {children}
+            </PostListContext.Provider>
+          );};
+        export default PostListProvider;
+    ```
+
     <hr>
 
-  - **3. Create State using useReducer**
-      <br>
-    - Create a **State** using **useReducer**, current value (postList) and *import* by **useContext**  into all components (children).
-      <br>
-    - **DispatchPostList** is used to pass action object (type, payload) to **Reducer** fnt (PostListReducer).
-      <br>
-    - **Reducer** fnt (PostListReducer) takes (currPostList, action) from **DispatchPostList** and **Return** **new state**.
+- **3. Create State using useReducer**
+  <br>
 
-      ```base
-        
-      1). import { useReducer } from "react";
+  - Create a **State** using **useReducer**, current value (postList) and _import_ by **useContext** into all components (children).
+    <br>
+  - **DispatchPostList** is used to pass action object (type, payload) to **Reducer** fnt (PostListReducer).
+    <br>
+  - **Reducer** fnt (PostListReducer) takes (currPostList, action) from **DispatchPostList** and **Return** **new state**.
 
-      2). const postListReducer = (currPostList, action) => {
-              if(action.type === "ADD_POST") { // logic with payload and currPostList}
-              return currPostList;
+    ```base
+
+    1). import { useReducer } from "react";
+
+    2). const postListReducer = (currPostList, action) => {
+            if(action.type === "ADD_POST") { // logic with payload and currPostList}
+            return currPostList;
+            };
+
+    3). const PostListProvider = ({ children }) => {
+
+          const [postList, dispatchPostList] = useReducer(postListReducer, STATIC_POST_DATA);
+
+            const addPost = () => {
+              const addPostActionObj = {
+                type: "ADD_POST",
+                payload: {
+                  value1,
+                  value2,
+                }
               };
+              dispatchPostList(addPostActionObj);
+            };
 
-      3). const PostListProvider = ({ children }) => {
+          return (
+            <PostListContext.Provider value={{ postList, addPost, deletePost }}>
+              {children}
+            </PostListContext.Provider>
+          );};
+    ```
 
-            const [postList, dispatchPostList] = useReducer(postListReducer, STATIC_POST_DATA);
-
-              const addPost = () => { 
-                const addPostActionObj = {
-                  type: "ADD_POST",
-                  payload: {
-                    value1,
-                    value2,
-                  }
-                };
-                dispatchPostList(addPostActionObj);
-              };
-
-            return (
-              <PostListContext.Provider value={{ postList, addPost, deletePost }}>
-                {children}
-              </PostListContext.Provider>
-            );};
-      ```
     <hr>
 
-  - **4. Pass OR import CurrState (postList) using useContext**
-      <br>
-    - **import** currState (**postList**) from **PostListContext** use by **useContext**
-      <br>
-    - **DispatchPostList** is used to pass action object (type, payload) to **Reducer** fnt (PostListReducer).
-      <br>
-    - **Reducer** fnt (PostListReducer) takes (currPostList, action) from **DispatchPostList** and **Return** **new state**.
+- **4. Pass OR import CurrState (postList) using useContext**
+  <br>
 
-      ```base
-      
-      0). <!-- PostList.jsx -->
+  - **import** currState (**postList**) from **PostListContext** use by **useContext**
+    <br>
+  - **DispatchPostList** is used to pass action object (type, payload) to **Reducer** fnt (PostListReducer).
+    <br>
+  - **Reducer** fnt (PostListReducer) takes (currPostList, action) from **DispatchPostList** and **Return** **new state**.
 
-      1). import { useContext } from "react";
-          import { PostListContext } from "../store/post-list-store";
+    ```base
 
-          const PostList = () => {
+    1). <!-- PostList.jsx -->
+        import { useContext } from "react";
+        import { PostListContext } from "../store/post-list-store";
 
-            <!-- Access currState "postList" -->
+        const PostList = () => {
 
-            const { postList } = useContext(PostListContext);
+          <!-- Access currState "postList" -->
 
-            return (<>
+          const { postList } = useContext(PostListContext);
 
-              <!-- use postList -->
+          return (<>
 
-                {postList.map((post) => (
-                  <Post key={post.id} post={post}></Post>
-                ))}
-              </>);};
-          export default PostList;
-      ```
+            <!-- use postList -->
+
+              {postList.map((post) => (
+                <Post key={post.id} post={post}></Post>
+              ))}
+            </>);};
+        export default PostList;
+    ```
+
+    <hr>
+
+- **5. Pass OR import addPost and deletePost using useContext**
+  <br>
+
+  - **import addPost** from **PostListContext** use by **useContext** into **CreatePost.jsx** component, use in _handleSubmit_ to get values using **useRef**, and pass all values (argument) by **addPost** fnt., after this _addPost_ fnt have a dispatcher _dispatchPostList_ that send action obj(type, payload) to reducer **postListReducer** that take currState and action and _return_ the new State (postList).
+    <br>
+  - **import deletePost** from **PostListContext** use by **useContext** into **Post.jsx** component. And pass in onClick fnt and _deletePost_ that take id **deletePost(post.id)**, And pass (argument) by **deletePost** fnt., after this _deletePost_ fnt have a dispatcher _dispatchPostList_ that send action obj(type, payload) to reducer **postListReducer** that take currState and action and _return_ the new State (postList).
+
+    ```base
+
+    1). <!-- CreatePost.jsx -->
+        import { useContext, useRef } from "react";
+        import { PostListContext } from "../store/post-list-store";
+
+        const CreatePost = () => {
+
+          const { addPost } = useContext(PostListContext);
+
+          const userIdElem = useRef();
+
+          const handleSubmit = (event) => {
+            event.preventDefault();
+            const userId = userIdElem.current.value;
+
+            addPost(userId, postTitle, postBody, reactions, tags);
+          };
+
+          return (
+            <form className="create-post" onSubmit={handleSubmit}>
+
+              <div className="mb-3">
+                <label htmlFor="userId" className="form-label">
+                  Enter your User Id here
+                </label>
+                <input
+                  type="text"
+                  ref={userIdElem}
+                  className="form-control"
+                  id="userId"
+                  placeholder="Your User Id"
+                />
+              </div>
+
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+
+            </form>);};
+
+        export default CreatePost;
+
+    2). <!-- post-list-store.jsx -->
+        const addPost = (userId, postTitle, postBody, reactions, tags)  => {
+
+        const addPostActionObj = {
+          type: "ADD_POST",
+          payload: {
+            id: Date.now(),
+            userId: userId,
+            title: postTitle,
+            body: postBody,
+            tags: tags,
+            reactions: reactions,
+          },
+        };
+        dispatchPostList(addPostActionObj);
+        };
+
+        const deletePost = (postId) => {
+
+        dispatchPostList({
+          type: "DELETE_POST",
+          payload: { postId },
+        });};
+
+        const postListReducer = (currPostList, action) => {
+
+        let newPostList = currPostList;
+
+        if (action.type === "DELETE_POST") {
+          newPostList = currPostList.filter(
+            (post) => post.id !== action.payload.postId
+          );
+        } else if (action.type === "ADD_POST") {
+          newPostList = [action.payload, ...currPostList];
+        }
+        return newPostList;
+        };
+
+    3). <!-- Post.jsx -->
+        import { useContext } from "react";
+        import { PostListContext } from "../store/post-list-store";
+
+        const Post = ({ post }) => {
+
+          const { deletePost } = useContext(PostListContext);
+
+          return (
+            <div className="card post-card" style={{ width: "25rem" }}>
+              <div className="card-body">
+                <h6 className="card-title">{post.userId}</h6>
+                <h5 className="card-title">
+                  {post.title}
+                  <span
+                    className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+
+                    onClick={() => deletePost(post.id)}
+                  >
+                    <MdDelete />
+                  </span>
+              </div>
+            </div>);};
+
+        export default Post;
+    ```
