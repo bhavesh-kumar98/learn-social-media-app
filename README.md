@@ -1119,7 +1119,7 @@
     - b). return
   - ii). **2nd Arg:** [dependency Array] we use in _Three_ ways
 
-    - a). _Empty Array:_ [] 
+    - a). _Empty Array:_ []
     - b). _Nothing:_ "Leave blank the 2nd Arg"
     - c). _Dependency Array:_ [data, value, fnt, method, anyList]
 
@@ -1146,19 +1146,63 @@
 
   ```base
 
-  2). <!-- post-list-store.jsx -->
-    useEffect(() => {
-      const controller = new AbortController();
-      const signal = controller.signal;
-      fetch("https://dummyjson.com/posts", { signal })
-        .then((res) => res.json())
-        .then((data) => {
-          addInitialPosts(data.posts);
-        });
-      return () => {
-        controller.abort();
-      };},
-    []);
+  2). <!-- PostList.jsx -->
+
+      useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        fetch("https://dummyjson.com/posts", { signal })
+          .then((res) => res.json())
+          .then((data) => {
+            addInitialPosts(data.posts);
+          });
+        return () => {
+          controller.abort();
+        };},
+      []);
   ```
 
-  <hr>
+<hr>
+
+**13. Handling Loading State:**
+
+- using _useEffect_ and _use state_
+
+  ```base
+
+  2). <!-- PostList.jsx -->
+
+      const [fetching, setFetching] = useState(false);
+      
+      useEffect(() => {
+
+        <!-- set Boolean state for loadingSpinner conditional rendering -->
+
+        setFetching(true);
+        
+        const controller = new AbortController();
+        const signal = controller.signal;
+        fetch("https://dummyjson.com/posts", { signal })
+          .then((res) => res.json())
+          .then((data) => {
+            addInitialPosts(data.posts);
+
+            setFetching(false);
+
+          });
+        return () => {
+          controller.abort();
+        };
+      }, []);
+
+      return (
+        <>
+          <!-- state And loadingSpinner, conditional rendering -->
+
+          {fetching && <LoadingSpinner/>}
+          
+          {!fetching && postList.length === 0 && <WelcomeMessage />}
+          {!fetching && postList.map((post) => (
+            <Post key={post.id} post={post}></Post>
+          ))}
+  ```
