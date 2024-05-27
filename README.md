@@ -1111,7 +1111,8 @@
 <hr>
 
 **12. The useEffect Hook:**
-
+- fnt executed when dependency change
+- prevent from re-rendering
 - This takes **Two Argument**
 
   - i). **1st Arg:** fnt/method + return
@@ -1206,3 +1207,31 @@
             <Post key={post.id} post={post}></Post>
           ))}
   ```
+
+<hr>
+
+**14. The useCallback Hook:**
+- return fnt/method when dependency change
+- return fnt/method
+- use to keep consistency in obj refresh for child comp., enhance performs with frequent updates.
+
+- This takes **Two Argument** And **Return** fnt/method (deletePost)
+
+  - i). **1st Arg:** callback fnt/method (deletePost) that was returned.
+
+  - ii). **2nd Arg:** [dependency Array] we use in _Three_ ways.
+    - a). _Empty Array:_ [].
+    - b). _Nothing:_ "Leave blank the 2nd Arg".
+    - c). _Dependency Array:_ [data, value, fnt, method, anyList].
+
+```base
+
+2). <!-- post-list-store.jsx -->
+
+    const deletePost = useCallback((postId) => {
+      dispatchPostList({
+        type: "DELETE_POST",
+        payload: { postId },
+      });
+    }, [dispatchPostList]);
+```
