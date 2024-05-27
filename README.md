@@ -1111,12 +1111,18 @@
 <hr>
 
 **12. The useEffect Hook:**
+
 - This takes **Two Argument**
+
   - i). **1st Arg:** fnt/method + return
     - a). any Function/Method
     - b). return
-  - ii). **2nd Arg:** [dependency Array] we use 
- 
+  - ii). **2nd Arg:** [dependency Array] we use in _Three_ ways
+
+    - a). _Empty Array:_ [] 
+    - b). _Nothing:_ "Leave blank the 2nd Arg"
+    - c). _Dependency Array:_ [data, value, fnt, method, anyList]
+
       ```base
 
       1). useEffect(
@@ -1133,9 +1139,11 @@
           <!-- 2nd Arg dependency Array -->
           []);
       ```
-    <br>
-    
+
+      <br>
+
 - **useEffect**
+
   ```base
 
   2). <!-- post-list-store.jsx -->
@@ -1152,4 +1160,5 @@
       };},
     []);
   ```
+
   <hr>
