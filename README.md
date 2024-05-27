@@ -1171,7 +1171,7 @@
 
   ```base
 
-  2). <!-- PostList.jsx -->
+      <!-- PostList.jsx -->
 
       const [fetching, setFetching] = useState(false);
       
@@ -1213,6 +1213,7 @@
 **14. The useCallback Hook:**
 - return fnt/method when dependency change
 - return fnt/method
+- memorizes fnt.
 - use to keep consistency in obj refresh for child comp., enhance performs with frequent updates.
 
 - This takes **Two Argument** And **Return** fnt/method (deletePost)
@@ -1226,7 +1227,7 @@
 
 ```base
 
-2). <!-- post-list-store.jsx -->
+    <!-- post-list-store.jsx -->
 
     const deletePost = useCallback((postId) => {
       dispatchPostList({
@@ -1234,4 +1235,28 @@
         payload: { postId },
       });
     }, [dispatchPostList]);
+```
+
+<hr>
+
+**15. The useMemo Hook:**
+- return value/result of fnt when dependency change.
+- return value OR result of fnt.
+- memorizes values
+- intensive computations or operations that shouldn't run on every render.
+
+- This takes **Two Argument** And **Return**  value of fnt
+
+  - i). **1st Arg:** fnt/method that was returned value of fnt.
+
+  - ii). **2nd Arg:** [dependency Array] we use in _Three_ ways.
+    - a). _Empty Array:_ [].
+    - b). _Nothing:_ "Leave blank the 2nd Arg".
+    - c). _Dependency Array:_ [data, value, fnt, method, anyList].
+
+```base
+  <!-- Example -->
+
+  const arr = [5, 8, 9, 7, 9,];
+  const sortedArrValue = useMemo(() => arr.sort(), [arr]);
 ```
