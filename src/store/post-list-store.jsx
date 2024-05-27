@@ -3,6 +3,7 @@ import { createContext, useReducer } from "react";
 export const PostListContext = createContext({
   postList: [],
   addPost: () => {},
+  addInitialPosts: () => {},
   deletePost: () => {},
 });
 
@@ -12,6 +13,8 @@ const postListReducer = (currPostList, action) => {
     newPostList = currPostList.filter(
       (post) => post.id !== action.payload.postId
     );
+  } else if (action.type === "ADD_INITIAL_POSTS") {
+    newPostList = action.payload.posts;
   } else if (action.type === "ADD_POST") {
     newPostList = [action.payload, ...currPostList];
   }
@@ -19,13 +22,9 @@ const postListReducer = (currPostList, action) => {
 };
 
 const PostListProvider = ({ children }) => {
-  const [postList, dispatchPostList] = useReducer(
-    postListReducer,
-    STATIC_POST_DATA
-  );
+  const [postList, dispatchPostList] = useReducer(postListReducer, []);
 
   const addPost = (userId, postTitle, postBody, reactions, tags) => {
-
     const addPostActionObj = {
       type: "ADD_POST",
       payload: {
@@ -40,6 +39,15 @@ const PostListProvider = ({ children }) => {
     dispatchPostList(addPostActionObj);
   };
 
+  const addInitialPosts = (posts) => {
+    dispatchPostList({
+      type: "ADD_INITIAL_POSTS",
+      payload: {
+        posts,
+      },
+    });
+  };
+
   const deletePost = (postId) => {
     dispatchPostList({
       type: "DELETE_POST",
@@ -48,38 +56,40 @@ const PostListProvider = ({ children }) => {
   };
 
   return (
-    <PostListContext.Provider value={{ postList, addPost, deletePost }}>
+    <PostListContext.Provider
+      value={{ postList, addPost, addInitialPosts, deletePost }}
+    >
       {children}
     </PostListContext.Provider>
   );
 };
 
 // dummy data
-const STATIC_POST_DATA = [
-  {
-    id: "1",
-    userId: 1,
-    title: "TITLE 1",
-    body: " never looked down oe him change his mind.",
-    tags: ["history", "crime"],
-    reactions: 2,
-  },
-  {
-    id: "2",
-    userId: 2,
-    title: "TITLE 2",
-    body: "His mohan him. But tup of people he was talking to made him change his mind.",
-    tags: ["dfhdh dfh ", "american"],
-    reactions: 8,
-  },
-  {
-    id: "3",
-    userId: 3,
-    title: "TITLE 3",
-    body: "to made him change his mind.",
-    tags: ["dfgh", "fghf fgh", "fgh"],
-    reactions: 9,
-  },
-];
+// const STATIC_POST_DATA = [
+//   {
+//     id: "1",
+//     userId: 1,
+//     title: "TITLE 1",
+//     body: " never looked down oe him change his mind.",
+//     tags: ["history", "crime"],
+//     reactions: 2,
+//   },
+//   {
+//     id: "2",
+//     userId: 2,
+//     title: "TITLE 2",
+//     body: "His mohan him. But tup of people he was talking to made him change his mind.",
+//     tags: ["dfhdh dfh ", "american"],
+//     reactions: 8,
+//   },
+//   {
+//     id: "3",
+//     userId: 3,
+//     title: "TITLE 3",
+//     body: "to made him change his mind.",
+//     tags: ["dfgh", "fghf fgh", "fgh"],
+//     reactions: 9,
+//   },
+// ];
 
 export default PostListProvider;

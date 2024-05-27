@@ -26,3 +26,14 @@
   width: 50%;
   margin: 50px auto;
 }
+
+.welcome-message {
+  margin: 100px 0;
+}
+
+.reactions-icon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 110px;
+}

@@ -1095,3 +1095,61 @@
 
         export default Post;
     ```
+
+<hr>
+
+**11. Data Fetching using Fetch with Dummy API:**
+
+```base
+  <!-- PostList.jsx -->
+
+  fetch("https://dummyjson.com/posts")
+  .then((res) => res.json())
+  .then((data) => console.log(data.posts));
+```
+
+<hr>
+
+**12. The useEffect Hook:**
+- This takes **Two Argument**
+  - i). **1st Arg:** fnt/method + return
+    - a). any Function/Method
+    - b). return
+  - ii). **2nd Arg:** [dependency Array] we use 
+ 
+      ```base
+
+      1). useEffect(
+            <!-- 1st Arg with return -->
+            () => {
+            fetch("https://dummyjson.com/posts")
+              .then((res) => res.json())
+              .then((data) => {
+                addInitialPosts(data.posts);
+              });
+            return () => {
+              controller.abort();
+            };},
+          <!-- 2nd Arg dependency Array -->
+          []);
+      ```
+    <br>
+    
+- **useEffect**
+  ```base
+
+  2). <!-- post-list-store.jsx -->
+    useEffect(() => {
+      const controller = new AbortController();
+      const signal = controller.signal;
+      fetch("https://dummyjson.com/posts", { signal })
+        .then((res) => res.json())
+        .then((data) => {
+          addInitialPosts(data.posts);
+        });
+      return () => {
+        controller.abort();
+      };},
+    []);
+  ```
+  <hr>
