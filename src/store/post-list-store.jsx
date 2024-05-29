@@ -1,9 +1,9 @@
-import { createContext, useCallback, useReducer } from "react";
+import { createContext, useCallback, useEffect, useReducer, useState } from "react";
 
 export const PostListContext = createContext({
   postList: [],
+  fetching: false,
   addPost: () => {},
-  addInitialPosts: () => {},
   deletePost: () => {},
 });
 
@@ -23,6 +23,7 @@ const postListReducer = (currPostList, action) => {
 
 const PostListProvider = ({ children }) => {
   const [postList, dispatchPostList] = useReducer(postListReducer, []);
+  const [fetching, setFetching] = useState(false);
 
   const addPost = (userId, postTitle, postBody, reactions, tags) => {
     const addPostActionObj = {
@@ -55,41 +56,28 @@ const PostListProvider = ({ children }) => {
     });
   }, [dispatchPostList]);
 
+  useEffect(() => {
+    setFetching(true);
+    const controller = new AbortController();
+    const signal = controller.signal;
+    fetch("https://dummyjson.com/posts", { signal })
+      .then((res) => res.json())
+      .then((data) => {
+        addInitialPosts(data.posts);
+        setFetching(false);
+      });
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
   return (
     <PostListContext.Provider
-      value={{ postList, addPost, addInitialPosts, deletePost }}
+      value={{ fetching, postList, addPost, deletePost }}
     >
       {children}
     </PostListContext.Provider>
   );
 };
-
-// dummy data
-// const STATIC_POST_DATA = [
-//   {
-//     id: "1",
-//     userId: 1,
-//     title: "TITLE 1",
-//     body: " never looked down oe him change his mind.",
-//     tags: ["history", "crime"],
-//     reactions: 2,
-//   },
-//   {
-//     id: "2",
-//     userId: 2,
-//     title: "TITLE 2",
-//     body: "His mohan him. But tup of people he was talking to made him change his mind.",
-//     tags: ["dfhdh dfh ", "american"],
-//     reactions: 8,
-//   },
-//   {
-//     id: "3",
-//     userId: 3,
-//     title: "TITLE 3",
-//     body: "to made him change his mind.",
-//     tags: ["dfgh", "fghf fgh", "fgh"],
-//     reactions: 9,
-//   },
-// ];
 
 export default PostListProvider;

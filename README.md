@@ -950,7 +950,7 @@
 - **4. Pass OR import CurrState (postList) using useContext**
   <br>
 
-  - **import** currState (**postList**) from **PostListContext** use by **useContext**
+  - **import** currState (**postList**) from **PostListContext** use by **useContext**.
     <br>
   - **DispatchPostList** is used to pass action object (type, payload) to **Reducer** fnt (PostListReducer).
     <br>
@@ -1111,18 +1111,19 @@
 <hr>
 
 **12. The useEffect Hook:**
-- fnt executed when dependency change
-- prevent from re-rendering
-- This takes **Two Argument**
 
-  - i). **1st Arg:** fnt/method + return
-    - a). any Function/Method
-    - b). return
-  - ii). **2nd Arg:** [dependency Array] we use in _Three_ ways
+- fnt executed when dependency change.
+- prevent from re-rendering.
+- This takes **Two Argument**.
 
-    - a). _Empty Array:_ []
-    - b). _Nothing:_ "Leave blank the 2nd Arg"
-    - c). _Dependency Array:_ [data, value, fnt, method, anyList]
+  - i). **1st Arg:** fnt/method + return.
+    - a). any Function/Method.
+    - b). return.
+  - ii). **2nd Arg:** [dependency Array] we use in _Three_ ways.
+
+    - a). _Empty Array:_ [].
+    - b). _Nothing:_ "Leave blank the 2nd Arg".
+    - c). _Dependency Array:_ [data, value, fnt, method, anyList].
 
       ```base
 
@@ -1167,20 +1168,20 @@
 
 **13. Handling Loading State:**
 
-- using _useEffect_ and _use state_
+- using _useEffect_ and _use state_.
 
   ```base
 
       <!-- PostList.jsx -->
 
       const [fetching, setFetching] = useState(false);
-      
+
       useEffect(() => {
 
         <!-- set Boolean state for loadingSpinner conditional rendering -->
 
         setFetching(true);
-        
+
         const controller = new AbortController();
         const signal = controller.signal;
         fetch("https://dummyjson.com/posts", { signal })
@@ -1201,7 +1202,7 @@
           <!-- state And loadingSpinner, conditional rendering -->
 
           {fetching && <LoadingSpinner/>}
-          
+
           {!fetching && postList.length === 0 && <WelcomeMessage />}
           {!fetching && postList.map((post) => (
             <Post key={post.id} post={post}></Post>
@@ -1211,12 +1212,13 @@
 <hr>
 
 **14. The useCallback Hook:**
-- return fnt/method when dependency change
-- return fnt/method
+
+- return fnt/method when dependency change.
+- return fnt/method.
 - memorizes fnt.
 - use to keep consistency in obj refresh for child comp., enhance performs with frequent updates.
 
-- This takes **Two Argument** And **Return** fnt/method (deletePost)
+- This takes **Two Argument** And **Return** fnt/method (deletePost).
 
   - i). **1st Arg:** callback fnt/method (deletePost) that was returned.
 
@@ -1240,12 +1242,13 @@
 <hr>
 
 **15. The useMemo Hook:**
+
 - return value/result of fnt when dependency change.
 - return value OR result of fnt.
-- memorizes values
+- memorizes values.
 - intensive computations or operations that shouldn't run on every render.
 
-- This takes **Two Argument** And **Return**  value of fnt
+- This takes **Two Argument** And **Return** value of fnt.
 
   - i). **1st Arg:** fnt/method that was returned value of fnt.
 
