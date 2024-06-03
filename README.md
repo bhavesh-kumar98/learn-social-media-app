@@ -1263,3 +1263,20 @@
   const arr = [5, 8, 9, 7, 9,];
   const sortedArrValue = useMemo(() => arr.sort(), [arr]);
 ```
+
+<hr>
+
+**16. Custom Hook:**
+
+- **Reusable logic:** This hook allow you to _extract and reuse Component logic and Sharing a "Stateful logic_ across _multiple components_.
+- _Create_ using **use** keyword.
+- we can _combine multiple built-in hooks_.
+- Helps in _isolating complex logic_.
+- **Custom Return value:** return any value (like: array, obj, any data type) based on requirements.
+
+```base
+  const [value, toggle] = useToggle(true);
+  const [value, {on, off, toggle}] = useBoolean(true);
+
+  const [myCurrValue, mySetFnt] = useMySetFnt(true);
+```
