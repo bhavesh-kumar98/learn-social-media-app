@@ -1290,7 +1290,7 @@
 
 ```base
   <!-- Example -->
-  
+
   fetch('https://dummyjson.com/posts/add', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1303,6 +1303,7 @@
   .then(res => res.json())
   .then(console.log);
 ```
+
 <br>
 
 ```base
@@ -1316,7 +1317,7 @@
     .
     .
     const tags = tagsElem.current.value.split(" ");
-    
+
     userIdElem.current.value = "";
     .
     .

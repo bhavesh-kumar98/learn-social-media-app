@@ -9,11 +9,10 @@ const PostList = () => {
 
   return (
     <>
-      {fetching && <LoadingSpinner/>}
+      {fetching && <LoadingSpinner />}
       {!fetching && postList.length === 0 && <WelcomeMessage />}
-      {!fetching && postList.map((post) => (
-        <Post key={post.id} post={post}></Post>
-      ))}
+      {!fetching &&
+        postList.map((post) => <Post key={post.id} post={post}></Post>)}
     </>
   );
 };

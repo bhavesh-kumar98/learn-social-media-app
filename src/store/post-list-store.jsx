@@ -56,10 +56,10 @@ const PostListProvider = ({ children }) => {
     dispatchPostList({
       type: "ADD_POST_METHOD_POST",
       payload: {
-        post, 
+        post,
       },
     });
-  }
+  };
 
   const addInitialPosts = (posts) => {
     dispatchPostList({
@@ -70,12 +70,15 @@ const PostListProvider = ({ children }) => {
     });
   };
 
-  const deletePost = useCallback((postId) => {
-    dispatchPostList({
-      type: "DELETE_POST",
-      payload: { postId },
-    });
-  }, [dispatchPostList]);
+  const deletePost = useCallback(
+    (postId) => {
+      dispatchPostList({
+        type: "DELETE_POST",
+        payload: { postId },
+      });
+    },
+    [dispatchPostList]
+  );
 
   useEffect(() => {
     setFetching(true);

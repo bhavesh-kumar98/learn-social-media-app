@@ -40,7 +40,7 @@ const CreatePost = () => {
     const likes = likesElem.current.value;
     const dislikes = dislikesElem.current.value;
     const tags = tagsElem.current.value.split(" ");
-    
+
     userIdElem.current.value = "";
     postTitleElem.current.value = "";
     postBodyElem.current.value = "";
@@ -63,7 +63,7 @@ const CreatePost = () => {
       }),
     })
       .then((res) => res.json())
-      .then(post => addPostMethodPost(post));
+      .then((post) => addPostMethodPost(post));
   };
 
   return (
