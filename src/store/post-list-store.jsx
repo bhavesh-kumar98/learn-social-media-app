@@ -1,8 +1,15 @@
-import { createContext, useCallback, useEffect, useReducer, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 
 export const PostListContext = createContext({
   postList: [],
   fetching: false,
+  addPostMethodPost: () => {},
   addPost: () => {},
   deletePost: () => {},
 });
@@ -15,6 +22,8 @@ const postListReducer = (currPostList, action) => {
     );
   } else if (action.type === "ADD_INITIAL_POSTS") {
     newPostList = [...action.payload.posts, ...currPostList];
+  } else if (action.type === "ADD_POST_METHOD_POST") {
+    newPostList = [action.payload.post, ...currPostList];
   } else if (action.type === "ADD_POST") {
     newPostList = [action.payload, ...currPostList];
   }
@@ -25,7 +34,7 @@ const PostListProvider = ({ children }) => {
   const [postList, dispatchPostList] = useReducer(postListReducer, []);
   const [fetching, setFetching] = useState(false);
 
-  const addPost = (userId, postTitle, postBody, reactions, tags) => {
+  const addPost = (userId, postTitle, postBody, likes, dislikes, tags) => {
     const addPostActionObj = {
       type: "ADD_POST",
       payload: {
@@ -34,11 +43,23 @@ const PostListProvider = ({ children }) => {
         title: postTitle,
         body: postBody,
         tags: tags,
-        reactions: reactions,
+        reactions: {
+          likes: likes,
+          dislikes: dislikes,
+        },
       },
     };
     dispatchPostList(addPostActionObj);
   };
+
+  const addPostMethodPost = (post) => {
+    dispatchPostList({
+      type: "ADD_POST_METHOD_POST",
+      payload: {
+        post, 
+      },
+    });
+  }
 
   const addInitialPosts = (posts) => {
     dispatchPostList({
@@ -73,7 +94,7 @@ const PostListProvider = ({ children }) => {
 
   return (
     <PostListContext.Provider
-      value={{ fetching, postList, addPost, deletePost }}
+      value={{ fetching, postList, addPostMethodPost, addPost, deletePost }}
     >
       {children}
     </PostListContext.Provider>

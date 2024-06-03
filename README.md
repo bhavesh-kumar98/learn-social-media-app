@@ -1280,3 +1280,65 @@
 
   const [myCurrValue, mySetFnt] = useMySetFnt(true);
 ```
+
+<hr>
+
+**17. Submitting data with Fetch (POST Method):**
+
+- **method: 'POST':** Submit the data at server using _POST_ Method.
+- **body:** for Submit the data value at server.
+
+```base
+  <!-- Example -->
+  
+  fetch('https://dummyjson.com/posts/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: 'I am in love with someone.',
+      userId: 5,
+      /* other post data */
+    })
+  })
+  .then(res => res.json())
+  .then(console.log);
+```
+<br>
+
+```base
+  <!-- CreatePost.jsx -->
+
+  const handlePostSubmit = (event) => {
+    event.preventDefault();
+
+    const userId = userIdElem.current.value;
+    .
+    .
+    .
+    const tags = tagsElem.current.value.split(" ");
+    
+    userIdElem.current.value = "";
+    .
+    .
+    .
+    tagsElem.current.value = "";
+
+    fetch("https://dummyjson.com/posts/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+
+      body: JSON.stringify({
+        userId: userId,
+        title: postTitle,
+        body: postBody,
+        tags: tags,
+        reactions: {
+          likes: likes,
+          dislikes: dislikes,
+        },
+      }),
+    })
+      .then((res) => res.json())
+      .then(post => addPostMethodPost(post));
+  };
+```

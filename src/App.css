@@ -38,6 +38,10 @@
   width: 110px;
 }
 
-.loadingSpinner{
-margin: 100px;
+.loadingSpinner {
+  margin: 100px;
+}
+
+.buttons {
+  margin-right: 50px;
 }

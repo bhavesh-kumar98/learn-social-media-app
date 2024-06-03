@@ -1,34 +1,73 @@
 import { useContext, useRef } from "react";
 import { PostListContext } from "../store/post-list-store";
+import { AiFillLike } from "react-icons/ai";
+import { AiFillDislike } from "react-icons/ai";
 
 const CreatePost = () => {
-  const { addPost } = useContext(PostListContext);
+  const { addPost, addPostMethodPost } = useContext(PostListContext);
 
   const userIdElem = useRef();
   const postTitleElem = useRef();
   const postBodyElem = useRef();
-  const reactionsElem = useRef();
+  const likesElem = useRef();
+  const dislikesElem = useRef();
   const tagsElem = useRef();
 
-  const handleSubmit = (event) => {
+  const handleDirectSubmit = (event) => {
     event.preventDefault();
     const userId = userIdElem.current.value;
     const postTitle = postTitleElem.current.value;
     const postBody = postBodyElem.current.value;
-    const reactions = reactionsElem.current.value;
+    const likes = likesElem.current.value;
+    const dislikes = dislikesElem.current.value;
     const tags = tagsElem.current.value.split(" ");
 
     userIdElem.current.value = "";
     postTitleElem.current.value = "";
     postBodyElem.current.value = "";
-    reactionsElem.current.value = "";
+    likesElem.current.value = "";
+    dislikesElem.current.value = "";
     tagsElem.current.value = "";
 
-    addPost(userId, postTitle, postBody, reactions, tags);
+    addPost(userId, postTitle, postBody, likes, dislikes, tags);
+  };
+
+  const handlePostSubmit = (event) => {
+    event.preventDefault();
+    const userId = userIdElem.current.value;
+    const postTitle = postTitleElem.current.value;
+    const postBody = postBodyElem.current.value;
+    const likes = likesElem.current.value;
+    const dislikes = dislikesElem.current.value;
+    const tags = tagsElem.current.value.split(" ");
+    
+    userIdElem.current.value = "";
+    postTitleElem.current.value = "";
+    postBodyElem.current.value = "";
+    likesElem.current.value = "";
+    dislikesElem.current.value = "";
+    tagsElem.current.value = "";
+
+    fetch("https://dummyjson.com/posts/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        userId: userId,
+        title: postTitle,
+        body: postBody,
+        tags: tags,
+        reactions: {
+          likes: likes,
+          dislikes: dislikes,
+        },
+      }),
+    })
+      .then((res) => res.json())
+      .then(post => addPostMethodPost(post));
   };
 
   return (
-    <form className="create-post" onSubmit={handleSubmit}>
+    <form className="create-post" onSubmit={handlePostSubmit}>
       <div className="mb-3">
         <label htmlFor="userId" className="form-label">
           Enter your User Id here
@@ -65,22 +104,34 @@ const CreatePost = () => {
           id="body"
           placeholder="Tell us more about it"
         />
-      </div> 
+      </div>
       <div className="mb-3">
         <label htmlFor="reactions" className="form-label">
-          Number of reactions
+          Number of likes <AiFillLike />
         </label>
         <input
           type="text"
-          ref={reactionsElem}
+          ref={likesElem}
           className="form-control"
           id="reactions"
-          placeholder="How many people reacted to this post"
+          placeholder="How many people like to this post"
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="reactions" className="form-label">
+          Number of dislikes <AiFillDislike />
+        </label>
+        <input
+          type="text"
+          ref={dislikesElem}
+          className="form-control"
+          id="reactions"
+          placeholder="How many people dislike to this post"
         />
       </div>
       <div className="mb-3">
         <label htmlFor="tags" className="form-label">
-        Enter your hashtags here
+          Enter your hashtags here
         </label>
         <input
           type="text"
@@ -90,8 +141,15 @@ const CreatePost = () => {
           placeholder="Please enter tags using space"
         />
       </div>
-      <button type="submit" className="btn btn-primary">
-        Submit
+      <button type="submit" className="btn btn-primary buttons">
+        Post Submit
+      </button>
+      <button
+        type="submit"
+        onClick={handleDirectSubmit}
+        className="btn btn-primary buttons"
+      >
+        Direct Submit
       </button>
     </form>
   );
