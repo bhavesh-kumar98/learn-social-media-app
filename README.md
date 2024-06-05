@@ -1343,3 +1343,244 @@
       .then(post => addPostMethodPost(post));
   };
 ```
+
+<hr>
+
+**18. React Router:**
+<br/>
+
+**Install:** _npm install react-react-router-dom_
+
+- **1). createBrowserRouter:** helps to **Creating** the **Mapping** for **Router Provider**.
+
+  - Creating the mapping (page-child (SPA)) for <ReactProvider/> component that the wraps the <APP/>.
+  - Give a link/url/path to a Component for mapping.
+
+- **2). RouterProvider:** Wrap the app for routing capabilities.
+
+  - **Routes** are React components.
+
+  ```base
+    <!-- main.jsx -->
+    <!-- createBrowserRouter -->
+    <!-- RouterProvider -->
+
+    import App from "./routes/App.jsx"
+    import CreatePost from "./components/CreatePost.jsx";
+    import PostList from "./components/PostList.jsx";
+
+    import { RouterProvider, createBrowserRouter } from "react-router-dom";
+
+    <!-- createBrowserRouter -->
+
+    const router = createBrowserRouter([
+      {path: "/learn-social-media-app/",
+        element: <App/>,
+        children: [
+        {path: "/learn-social-media-app/", element: <PostList/> },
+        {path: "/learn-social-media-app/create-post", element: <CreatePost />},
+      ]},
+
+    ])
+
+    ReactDOM.createRoot(document.getElementById("root")).render(
+      <React.StrictMode>
+
+        <!-- RouterProvider -->
+        <RouterProvider router={router}/>
+
+      </React.StrictMode>
+    );
+  ```
+
+  <hr>
+
+- **3). Route Links:**
+
+  - **i). Link:** < Link to="/path" >...</ Link>
+
+    - **"Link"** component with **"to"** property can be used to specify a target or **destination/path** for the (Link). And _avoid reloading_.
+    - Define a **URL/path** where the **Link** should link.
+
+    ```base
+      <!-- Sidebar.jsx -->
+      <!-- Route Links -->
+      <!-- useNavigate Hook -->
+
+      import { Link } from "react-router-dom";
+
+      function Sidebar() {
+        return (
+          <div>
+
+          <!-- Route Links with "to" -->
+
+            <Link
+              to="/learn-social-media-app"
+              >
+              Home
+            </Link>
+
+            <!-- Route Links with "to" -->
+
+            <Link
+              to="/learn-social-media-app/create-post"
+            >
+              Create Post
+            </Link>
+
+          </div>
+        );
+      }
+
+      export default Sidebar;
+    ```
+
+    <hr>
+
+  - **ii). useNavigate Hook:** can be used to do **navigation programmatically**.
+
+    ```base
+      <!-- CreatePost.jsx -->
+      <!-- useNavigate Hook -->
+
+      import { useNavigate } from "react-router-dom";
+
+        const handlePostSubmit = (event) => {
+          event.preventDefault();
+              <!-- logic -->
+          fetch("https://dummyjson.com/posts/add", {
+            method: "POST",
+
+          })
+            .then((post) => addPostMethodPost(post));
+
+            <!-- useNavigate Hook -->
+
+            navigate("/learn-social-media-app/")
+        };
+
+        return (
+          <form className="create-post" onSubmit={handlePostSubmit}>
+                  <!-- Form -->
+            <button type="submit" className="btn btn-primary buttons">
+              Post Submit
+            </button>
+          </form>
+        );
+
+      export default CreatePost;
+
+
+    ```
+
+    ```base
+      <!-- CreatePost.jsx -->
+      <!-- useNavigate Hook -->
+
+      import { useNavigate } from "react-router-dom";
+
+        const handlePostSubmit = (event) => {
+          event.preventDefault();
+              <!-- logic -->
+
+            <!-- useNavigate Hook -->
+
+            navigate("/learn-social-media-app/")
+        };
+    ```
+
+  <hr>
+
+- **4). Layout Routes:**
+
+  - **i). Layout Routes** help us to use **shared elements**.
+
+    - **Create root folder:** /src/routes/App.jsx.
+
+    - **Layout Routes** shared elements like **SPA**.
+    - Using the **path** + **children** in _createBrowserRouter_
+
+    ```base
+      <!-- main.jsx -->
+      <!-- Layout Routes -->
+
+      const router = createBrowserRouter([
+        {
+          path: "/learn-social-media-app/",
+          element: <App />,
+
+          <!-- using children -->
+
+          children: [
+
+            <!-- shared elements -->
+
+            { path: "/learn-social-media-app/", element: <PostList /> },
+            { path: "/learn-social-media-app/create-post", element: <CreatePost /> },
+          ],
+        },
+      ]);
+    ```
+
+    <hr>
+
+  - **ii). Outlet:**
+
+    - **Outlet** component is used to render the children at the correct places.
+    - use for shared elements / _conditional rending_.
+    - Using the **children** + **< Outlet />**.
+
+    ```base
+      <!-- main.jsx -->
+      <!-- Layout Routes -->
+
+      const router = createBrowserRouter([
+        {
+          path: "/learn-social-media-app/",
+          element: <App />,
+
+          <!-- using children -->
+
+          children: [
+
+            <!-- this is shared elements -->
+
+            { path: "/learn-social-media-app/", element: <PostList /> },
+            { path: "/learn-social-media-app/create-post", element: <CreatePost /> },
+          ],
+        },
+      ]);
+
+    ```
+
+    ```base
+      <!-- App.jsx -->
+      <!-- Outlet component -->
+
+      import { Outlet } from "react-router-dom";
+
+      function App() {
+
+        return (
+          <>
+            <PostListProvider>
+              <div className="app-container">
+                <Sidebar/>
+                <div className="content">
+                  <Header/>
+
+                    <!-- Outlet component for shared element-->
+                    <Outlet/>
+
+
+                  <Footer/>
+                </div>
+              </div>
+            </PostListProvider>
+          </>
+        );}
+      export default App;
+    ```
+
+<hr>

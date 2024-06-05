@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Sidebar({ selectedTab, setSelectedTab }) {
   return (
     <div
@@ -21,8 +23,8 @@ function Sidebar({ selectedTab, setSelectedTab }) {
             setSelectedTab("Home");
           }}
         >
-          <a
-            href="#"
+          <Link
+            to="/learn-social-media-app"
             className={`nav-link text-white ${
               selectedTab === "Home" && "active"
             }`}
@@ -32,15 +34,15 @@ function Sidebar({ selectedTab, setSelectedTab }) {
               <use xlinkHref="#home"></use>
             </svg>
             Home
-          </a>
+          </Link>
         </li>
         <li
           onClick={() => {
             setSelectedTab("CreatePost");
           }}
         >
-          <a
-            href="#"
+          <Link
+            to="/learn-social-media-app/create-post"
             className={`nav-link text-white ${
               selectedTab === "CreatePost" && "active"
             }`}
@@ -49,7 +51,7 @@ function Sidebar({ selectedTab, setSelectedTab }) {
               <use xlinkHref="#people-circle"></use>
             </svg>
             Create Post
-          </a>
+          </Link>
         </li>
       </ul>
       <hr />

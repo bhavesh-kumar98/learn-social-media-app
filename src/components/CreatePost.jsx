@@ -2,9 +2,11 @@ import { useContext, useRef } from "react";
 import { PostListContext } from "../store/post-list-store";
 import { AiFillLike } from "react-icons/ai";
 import { AiFillDislike } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const { addPost, addPostMethodPost } = useContext(PostListContext);
+  const navigate = useNavigate();
 
   const userIdElem = useRef();
   const postTitleElem = useRef();
@@ -30,6 +32,7 @@ const CreatePost = () => {
     tagsElem.current.value = "";
 
     addPost(userId, postTitle, postBody, likes, dislikes, tags);
+    navigate("/learn-social-media-app/");
   };
 
   const handlePostSubmit = (event) => {
@@ -64,6 +67,7 @@ const CreatePost = () => {
     })
       .then((res) => res.json())
       .then((post) => addPostMethodPost(post));
+    navigate("/learn-social-media-app/");
   };
 
   return (
