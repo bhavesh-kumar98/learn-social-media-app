@@ -6,15 +6,15 @@ function Sidebar({ selectedTab, setSelectedTab }) {
       className="d-flex flex-column flex-shrink-0 p-3 text-bg-dark sidebar"
       style={{ width: "280px" }}
     >
-      <a
-        href="/"
+      <Link
+        to="/learn-social-media-app/"
         className="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
       >
         <svg className="bi pe-none me-2" width="40" height="32">
           <use xlinkHref="#bootstrap"></use>
         </svg>
         <span className="fs-4">Sidebar</span>
-      </a>
+      </Link>
       <hr />
       <ul className="nav nav-pills flex-column mb-auto">
         <li
@@ -24,7 +24,7 @@ function Sidebar({ selectedTab, setSelectedTab }) {
           }}
         >
           <Link
-            to="/learn-social-media-app"
+            to="/learn-social-media-app/"
             className={`nav-link text-white ${
               selectedTab === "Home" && "active"
             }`}
@@ -42,7 +42,7 @@ function Sidebar({ selectedTab, setSelectedTab }) {
           }}
         >
           <Link
-            to="/learn-social-media-app/create-post"
+            to="/learn-social-media-app/create-post/"
             className={`nav-link text-white ${
               selectedTab === "CreatePost" && "active"
             }`}

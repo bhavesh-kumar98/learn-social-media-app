@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       { path: "/learn-social-media-app/", element: <PostList /> },
-      { path: "/learn-social-media-app/create-post", element: <CreatePost /> },
+      { path: "/learn-social-media-app/create-post/", element: <CreatePost /> },
     ],
   },
 ]);
