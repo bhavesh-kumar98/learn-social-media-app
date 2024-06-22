@@ -1502,8 +1502,76 @@
     - Using the **path** + **children** in _createBrowserRouter_
 
     ```base
+      <!-- Example -->
       <!-- main.jsx -->
       <!-- Layout Routes -->
+
+      const router = createBrowserRouter([
+        {
+          path: '/',
+          element: <App />,
+          children: [
+            {
+              index: true,
+              element: <Home />,
+            },
+            {
+              path: 'about',
+              element: <About />,
+            },
+            {
+              path: 'contact',
+              element: <Contact   />,
+            },
+            {
+              path: 'user/*',
+              element: <UserLayout />,
+              children: [
+                {
+                  index: true,
+                  element: <UserDashboard />,
+                },
+                {
+                  path: 'profile',
+                  element: <Profile />,
+                },
+                {
+                  path: 'settings',
+                  element: <Settings />,
+                },
+              ],
+            },
+            {
+              path: 'admin/*',
+              element: <AdminLayout />,
+              children: [
+                {
+                  index: true,
+                  element: <AdminDashboard />,
+                },
+                {
+                  path: 'manage-users',
+                  element: <ManageUsers />,
+                },
+                {
+                  path: 'reports',
+                  element: <Reports />,
+                },
+              ],
+            },
+            {
+              path: '*',
+              element: <NoPage />,
+            },
+          ],
+        },
+      ]);
+    ```
+
+    <hr>
+    
+    ```base
+      <!-- main.jsx -->
 
       const router = createBrowserRouter([
         {
